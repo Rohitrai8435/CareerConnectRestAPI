@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
 
 const studentSchema = mongoose.Schema(
     {
@@ -20,6 +21,10 @@ const studentSchema = mongoose.Schema(
     },{timestamps : true}
 )
 
+studentSchema.pre("save",function(){
+    let salt = bcrypt.genSaltSync(10);
+    this.password = bcrypt.hashSync(this.password,salt);
+})
 
 const Student = mongoose.model("Student",studentSchema);
 

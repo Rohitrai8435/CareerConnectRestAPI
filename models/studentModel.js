@@ -4,6 +4,28 @@ const jwt = require('jsonwebtoken')
 
 const studentSchema = mongoose.Schema(
     {
+        firstname : {
+            type : String,
+            required : [true,"First Name is required"],
+            minLength : [4,"First Name should be atleast 4 character long"]
+        },
+        lastname : {
+            type : String,
+            required : [true,"First Name is required"],
+            minLength : [4,"First Name should be atleast 4 character long"]
+        },
+        contact : {
+            type : String,
+            required : [true,"Contact is required"],
+            minLength : [10,"Contact should be atleast 10 character long"],
+            maxLength : [10,"Contact should not exceed 10 character"]
+        },
+        city : {
+            type : String,
+            required : [true,"City Name is required"],
+            minLength : [3,"City Name should be atleast 3 character long"]
+        },
+        gender: {type : String,enum : ["Male","Female","Other"]},
         email : {
             type : String,
             unique : true,
@@ -23,6 +45,25 @@ const studentSchema = mongoose.Schema(
             type : String,
             default : "0"
         },
+        avatar : {
+            type : Object,
+            default : {
+                fileId : '',
+                url : 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&q=80&w=987&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+            }
+        },
+
+        resume : {
+            education : [],
+            jobs : [],
+            internships : [],
+            responsibilites : [],
+            courses : [],
+            projects : [],
+            skills : [],
+            accomplishments : [],
+        }
+
     },{timestamps : true}
 )
 

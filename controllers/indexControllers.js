@@ -3,6 +3,9 @@ const studentModel = require("../models/studentModel.js");
 const ErrorHandler = require("../utils/ErrorHandler");
 const {sendtoken} = require("../utils/SendToken.js");
 const { sendmail } = require("../utils/NodeMailer.js")
+const imagekit = require("../utils/imagekit.js").initImageKit();
+const path = require('path');
+
 exports.homepage = catchAsyncErrors(async (req,res,next)=>{
     res.json({message : "secure homepage"});
 });
@@ -66,6 +69,7 @@ exports.studentforgetlink = catchAsyncErrors(async (req,res,next)=>{
         message : "Password has been Successfully changed"
     })
 });
+
 exports.studentresetpassword = catchAsyncErrors(async (req,res,next)=>{
     
     const student = await studentModel.findById(req.params.id).exec();
@@ -79,4 +83,41 @@ exports.studentresetpassword = catchAsyncErrors(async (req,res,next)=>{
     sendtoken(student,201,res);
 
 });
+
+exports.studentupdate = catchAsyncErrors(async (req,res,next)=>{
+    const student = await studentModel.findByIdAndUpdate(req.params.id,req.body).exec();
+    await student.save();
+    
+    res.status(200).json({
+        success : true,
+        message : "Student Updated Successfull",
+        student,
+    })
+});
+
+exports.studentavatar = catchAsyncErrors(async (req,res,next)=>{
+
+    const student = await studentModel.findById(req.params.id).exec();
+    const file = req.files.avatar;
+
+    const momdifiedName = `imagekit-${Date.now()}${path.extname(file.name)}`
+
+    if(student.avatar.fileId!=="")
+    {
+        await imagekit.deleteFile(student.avatar.fileId);
+    }
+    const {fileId,url} = await imagekit.upload({
+        file : file.data,
+        fileName : momdifiedName
+    })
+    student.avatar = {fileId,url};
+    await student.save();
+    res.status(200).json({
+        success : true,
+        message : "File uploaded Successfull",
+    })
+
+});
+
+
 

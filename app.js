@@ -23,6 +23,9 @@ app.use(session(
 
 app.use(cookieparser())
 
+//EXPRESS-FILEUPLOADER
+const fileupload = require('express-fileupload');
+app.use(fileupload());
 //logger
 const logger = require('morgan');
 app.use(logger('tiny'))
@@ -33,7 +36,8 @@ app.listen(process.env.PORT,
 );
 
 // Routes
-app.use('/',require('./routes/indexRoutes.js'))
+app.use('/user',require('./routes/indexRoutes.js'))
+app.use('/resume',require('./routes/resumeRoutes.js'))
 
 // error handling
 const ErorrHandler = require('./utils/ErrorHandler.js');

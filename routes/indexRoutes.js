@@ -5,7 +5,9 @@ const {
     currentstudent, 
     studentsignup,
     studentsignin,
-    studentsignout
+    studentsignout,
+    studentsendmail,
+    studentforgetlink
  } = require('../controllers/indexControllers.js');
 
  const { isAuthenticated } = require("../middlewares/auth.js");
@@ -25,5 +27,11 @@ router.post("/students/signin",studentsignin)
 
 // GET /students/signout
 router.get("/students/signout",isAuthenticated,studentsignout)
+
+// POST /students/send-mail
+router.post("/students/send-mail",studentsendmail)
+
+//GET /student/forget-link/:id"
+router.get("/students/forget-link/:id",studentforgetlink);
 
 module.exports = router;

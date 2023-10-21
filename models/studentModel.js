@@ -18,7 +18,11 @@ const studentSchema = mongoose.Schema(
             maxLength : [15,"Password should not exceed more than 15 characters"],
             minLength : [6,"Password should have atleast 6 characters"],
             // match : [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/,"Please fill a valid Password"]
-        }
+        },
+        resetPasswordToken : {
+            type : String,
+            default : "0"
+        },
     },{timestamps : true}
 )
 

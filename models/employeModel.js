@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
-const studentSchema = mongoose.Schema(
+const employeSchema = mongoose.Schema(
     {
         firstname : {
             type : String,
@@ -45,23 +45,17 @@ const studentSchema = mongoose.Schema(
             type : String,
             default : "0"
         },
-        avatar : {
+        organizationname : {
+            type : String,
+            required : [true,"Organization Name is required"],
+            minLength : [4,"Organization Name should be atleast 4 character long"]
+        },
+        organizationlogo : {
             type : Object,
             default : {
-                fileId : '',
-                url : 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&q=80&w=987&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                fileId : "",
+                url : "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&q=80&w=987&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
             }
-        },
-
-        resume : {
-            education : [],
-            jobs : [],
-            internships : [],
-            responsibilites : [],
-            courses : [],
-            projects : [],
-            skills : [],
-            accomplishments : [],
         },
         internships : [
             {type : mongoose.Schema.Types.ObjectId, ref : "Internship"},
@@ -73,21 +67,21 @@ const studentSchema = mongoose.Schema(
     },{timestamps : true}
 )
 
-studentSchema.pre("save",function(){
+employeSchema.pre("save",function(){
     if(!this.isModified("password")){
         return;
     }
     let salt = bcrypt.genSaltSync(10);
     this.password = bcrypt.hashSync(this.password,salt);
 })
-studentSchema.methods.comparePassword = function(password)
+employeSchema.methods.comparePassword = function(password)
 {
     return bcrypt.compareSync(password,this.password);
 }
 
-studentSchema.methods.getjwtToken = function(){
+employeSchema.methods.getjwtToken = function(){
     return jwt.sign({id : this.id},process.env.JWT_SECRET,{expiresIn : process.env.JWT_EXPIRE});
 }
-const Student = mongoose.model("Student",studentSchema);
+const employe = mongoose.model("Employe",employeSchema);
 
-module.exports = Student;
+module.exports = employe;

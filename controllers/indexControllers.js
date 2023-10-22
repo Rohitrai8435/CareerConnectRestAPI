@@ -1,5 +1,7 @@
 const { catchAsyncErrors } = require("../middlewares/catchAsyncErrors");
 const studentModel = require("../models/studentModel.js");
+const internshipModel = require("../models/internshipModel.js");
+const jobModel = require("../models/jobModel.js");
 const ErrorHandler = require("../utils/ErrorHandler");
 const {sendtoken} = require("../utils/SendToken.js");
 const { sendmail } = require("../utils/NodeMailer.js")
@@ -120,4 +122,32 @@ exports.studentavatar = catchAsyncErrors(async (req,res,next)=>{
 });
 
 
+//  -   -   -   -   - APPLY INTERNSHIPS     -   -   -   -       --  -   -
+exports.applyinternship = catchAsyncErrors(async (req,res,next)=>{
+    const student = await studentModel.findById(req.id).exec();
+    const internship = await internshipModel.findById(req.params.internshipid).exec();
 
+    if(!internship) return next(new ErrorHandler("Internship not found",404));
+
+    student.internships.push(internship._id);
+    internship.students.push(student._id);
+
+    await student.save();
+    await internship.save();
+    res.json({student,internship})
+})
+
+//  -   -   -   -   - APPLY JOBS     -   -   -   -       --  -   -
+exports.applyjob = catchAsyncErrors(async (req,res,next)=>{
+    const student = await studentModel.findById(req.id).exec();
+    const job = await internshipModel.findById(req.params.jobid).exec();
+
+    if(!job) return next(new ErrorHandler("Internship not found",404));
+
+    student.jobs.push(job._id);
+    job.students.push(student._id);
+
+    await student.save();
+    await job.save();
+    res.json({student,job})
+})

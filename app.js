@@ -35,9 +35,15 @@ app.listen(process.env.PORT,
     console.log(`Server running on port : ${process.env.PORT}`)
 );
 
-// Routes
-app.use('/user',require('./routes/indexRoutes.js'))
+// Routes /
+app.use('/',require('./routes/indexRoutes.js'))
+
+// /resume
 app.use('/resume',require('./routes/resumeRoutes.js'))
+
+// /employe
+app.use('/employe',require('./routes/employeRoutes.js'))
+
 
 // error handling
 const ErorrHandler = require('./utils/ErrorHandler.js');

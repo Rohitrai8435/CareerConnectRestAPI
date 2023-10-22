@@ -11,6 +11,8 @@ const {
     studentresetpassword,
     studentupdate,
     studentavatar,
+    applyjob,
+    applyinternship
  } = require('../controllers/indexControllers.js');
 
  const { isAuthenticated } = require("../middlewares/auth.js");
@@ -45,5 +47,17 @@ router.post("/students/update/:id",isAuthenticated,studentupdate);
 
 //POST /student/reset-password/:id"
 router.post("/students/avatar/:id",isAuthenticated,studentavatar);
+
+
+// -  - -   -   -   -   -   -   - APPLY INTERNSHIP    -    -   -   -   -   -   -
+
+// POST /student/apply/:jobid
+router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinternship);
+
+
+// -  - -   -   -   -   -   -   - APPLY JOB    -    -   -   -   -   -   -
+
+// POST /student/apply/:jobid
+router.post("/student/apply/job/:jobid",isAuthenticated,applyjob);
 
 module.exports = router;

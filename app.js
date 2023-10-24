@@ -1,10 +1,11 @@
 require('dotenv').config({path : './.env'});
 const express = require('express');
 const app = express();
-
+const cors = require('cors');
 // DB CONNECTION 
 require("./models/database.js").connectDatabase();
 
+app.use(cors({credentials : true, origin : true}));
 // bodyparser
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));

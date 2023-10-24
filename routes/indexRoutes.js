@@ -18,35 +18,35 @@ const {
  const { isAuthenticated } = require("../middlewares/auth.js");
 
 //GET /
-router.get("/",isAuthenticated,homepage);
+router.get("/",homepage);
 
 // POST /student
 router.post("/student",isAuthenticated,currentstudent);
 
 
 // POST /students/signup
-router.post("/students/signup",studentsignup)
+router.post("/student/signup",studentsignup)
 
 // POST /students/signin
-router.post("/students/signin",studentsignin)
+router.post("/student/signin",studentsignin)
 
 // GET /students/signout
-router.get("/students/signout",isAuthenticated,studentsignout)
+router.get("/student/signout",isAuthenticated,studentsignout)
 
 // POST /students/send-mail
-router.post("/students/send-mail",studentsendmail)
+router.post("/student/send-mail",studentsendmail)
 
 //GET /student/forget-link/:id"
 router.get("/students/forget-link/:id",studentforgetlink);
 
 //POST /student/reset-password/:id"
-router.post("/students/reset-password/:id",isAuthenticated,studentresetpassword);
+router.post("/student/reset-password/:id",isAuthenticated,studentresetpassword);
 
 //POST /student/reset-password/:id"
-router.post("/students/update/:id",isAuthenticated,studentupdate);
+router.post("/student/update/:id",isAuthenticated,studentupdate);
 
 //POST /student/reset-password/:id"
-router.post("/students/avatar/:id",isAuthenticated,studentavatar);
+router.post("/student/avatar/:id",isAuthenticated,studentavatar);
 
 
 // -  - -   -   -   -   -   -   - APPLY INTERNSHIP    -    -   -   -   -   -   -

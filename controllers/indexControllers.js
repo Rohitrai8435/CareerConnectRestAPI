@@ -21,7 +21,7 @@ exports.currentstudent = catchAsyncErrors(async (req,res,next)=>{
 exports.studentsignup = catchAsyncErrors(async (req,res,next)=>{
     const student = await new studentModel(req.body).save();
     sendtoken(student,201,res);
-    // res.status(201).json(student);
+    res.status(201).json(student);
 });
 
 exports.studentsignin = catchAsyncErrors(async (req,res,next)=>{
@@ -32,7 +32,7 @@ exports.studentsignin = catchAsyncErrors(async (req,res,next)=>{
     const isMatch = student.comparePassword(req.body.password);
     if(!isMatch) return next(new ErrorHandler("Wron Credientials",500));
     sendtoken(student,200,res);
-    // res.json(student);
+    res.json({student});
 });
 
 exports.studentsignout = catchAsyncErrors(async (req,res,next)=>{

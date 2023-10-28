@@ -12,7 +12,9 @@ const {
     studentupdate,
     studentavatar,
     applyjob,
-    applyinternship
+    applyinternship,
+    allinternship,
+    alljobs
  } = require('../controllers/indexControllers.js');
 
  const { isAuthenticated } = require("../middlewares/auth.js");
@@ -37,7 +39,7 @@ router.get("/student/signout",isAuthenticated,studentsignout)
 router.post("/student/send-mail",studentsendmail)
 
 //GET /student/forget-link/:id"
-router.get("/students/forget-link/:id",studentforgetlink);
+router.post("/student/forget-link/",studentforgetlink);
 
 //POST /student/reset-password/:id"
 router.post("/student/reset-password/:id",isAuthenticated,studentresetpassword);
@@ -53,6 +55,13 @@ router.post("/student/avatar/:id",isAuthenticated,studentavatar);
 
 // POST /student/apply/:jobid
 router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinternship);
+
+
+// POST /allinternship
+router.post("/allinternship/",allinternship);
+
+//POST  /alljobs
+router.post("/alljobs/",alljobs);
 
 
 // -  - -   -   -   -   -   -   - APPLY JOB    -    -   -   -   -   -   -

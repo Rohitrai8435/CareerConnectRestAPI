@@ -18,8 +18,8 @@ exports.sendmail = async (req,res,next,url)=>{
         from : "rahulwarkade954@gmail.com",
         to : req.body.email,
         subject : "Password Reset Link",
-        html : `<h1>Click link below to reset password.</h1>
-        <a href="${url}">password reset link</a>`,
+        html : `<h1>Your one time password for forget password.</h1>
+        <h2>${url}</h2>`,
     }
 
     transport.sendMail(mailOptions,(err,info)=>{

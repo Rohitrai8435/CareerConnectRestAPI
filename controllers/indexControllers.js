@@ -13,7 +13,7 @@ exports.homepage = catchAsyncErrors(async (req,res,next)=>{
 });
 
 exports.currentstudent = catchAsyncErrors(async (req,res,next)=>{
-    const student = await studentModel.findById(req.id).exec();
+    const student = await studentModel.findById(req.id).populate('jobs').populate('internships').exec();
 
     res.json({student})
 })
@@ -47,19 +47,21 @@ exports.studentsendmail = catchAsyncErrors(async (req,res,next)=>{
         return next(new ErrorHandler("User not found with this email address",404))
     }
 
-    const url = `${req.protocol}://${req.get("host")}/student/forget-link/${student._id}`;
+    // const url = `${req.protocol}://${req.get("host")}/student/forget-link/${student._id}`;
+    const url = Math.floor(Math.random()* 9000+ 10000);
     
     sendmail(req,res,next,url);
-    student.resetPasswordToken = "1";
+    student.resetPasswordToken = `${url}`;
     await student.save();
+    res.status(200).json({student});
 });
 
 exports.studentforgetlink = catchAsyncErrors(async (req,res,next)=>{
-    const student = await studentModel.findById(req.params.id).exec();
+    const student = await studentModel.findOne({email : req.body.email}).exec();
 
     if(!student) return next(new ErrorHandler("User not found with this email",404));
 
-    if(student.resetPasswordToken === "1"){
+    if(student.resetPasswordToken === req.body.otp){
         student.resetPasswordToken = "0";
         student.password = req.body.password;
         await student.save();
@@ -68,14 +70,15 @@ exports.studentforgetlink = catchAsyncErrors(async (req,res,next)=>{
     }
 
     res.status(200).json({
-        message : "Password has been Successfully changed"
+        message : "Password has been Successfully changed",
+        student
     })
 });
 
 exports.studentresetpassword = catchAsyncErrors(async (req,res,next)=>{
     
     const student = await studentModel.findById(req.params.id).exec();
-
+    console.log(req.body);
     student.password = req.body.password;
     await student.save();
 
@@ -83,11 +86,10 @@ exports.studentresetpassword = catchAsyncErrors(async (req,res,next)=>{
         message : "Password has been Successfully Reset"
     })
     sendtoken(student,201,res);
-
 });
 
 exports.studentupdate = catchAsyncErrors(async (req,res,next)=>{
-    const student = await studentModel.findByIdAndUpdate(req.params.id,req.body).exec();
+    const student = await studentModel.findByIdAndUpdate(req.params.id,{...req.body}).exec();
     await student.save();
     
     res.status(200).json({
@@ -117,6 +119,7 @@ exports.studentavatar = catchAsyncErrors(async (req,res,next)=>{
     res.status(200).json({
         success : true,
         message : "File uploaded Successfull",
+        student,
     })
 
 });
@@ -137,12 +140,24 @@ exports.applyinternship = catchAsyncErrors(async (req,res,next)=>{
     res.json({student,internship})
 })
 
+
+//  -   -   -   -   - ALL INTERNSHIPS     -   -   -   -       --  -   -
+exports.allinternship = catchAsyncErrors(async (req,res,next)=>{
+    const internships = await internshipModel.find().exec();
+    // const internships = await internshipModel.find().limit(4).skip(req.params.length).exec();
+
+    if(!internships) return next(new ErrorHandler("Internship not found",404));
+
+    res.json({internships})
+})
+
+
 //  -   -   -   -   - APPLY JOBS     -   -   -   -       --  -   -
 exports.applyjob = catchAsyncErrors(async (req,res,next)=>{
     const student = await studentModel.findById(req.id).exec();
-    const job = await internshipModel.findById(req.params.jobid).exec();
+    const job = await jobModel.findById(req.params.jobid).exec();
 
-    if(!job) return next(new ErrorHandler("Internship not found",404));
+    if(!job) return next(new ErrorHandler("Jobs not found",404));
 
     student.jobs.push(job._id);
     job.students.push(student._id);
@@ -150,4 +165,14 @@ exports.applyjob = catchAsyncErrors(async (req,res,next)=>{
     await student.save();
     await job.save();
     res.json({student,job})
+})
+
+// -    -   -   -   -   -   -ALL JOBS   -   -   -   -   -   -   -   -   -   -   -   
+exports.alljobs = catchAsyncErrors(async (req,res,next)=>{
+    const jobs = await jobModel.find().exec();
+    // const internships = await internshipModel.find().limit(4).skip(req.params.length).exec();
+
+    if(!jobs) return next(new ErrorHandler("Jobs not found",404));
+
+    res.json({jobs})
 })

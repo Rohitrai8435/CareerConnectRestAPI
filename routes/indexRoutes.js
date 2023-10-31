@@ -14,7 +14,8 @@ const {
     applyjob,
     applyinternship,
     allinternship,
-    alljobs
+    alljobs,
+    readinternship,
  } = require('../controllers/indexControllers.js');
 
  const { isAuthenticated } = require("../middlewares/auth.js");
@@ -53,19 +54,25 @@ router.post("/student/avatar/:id",isAuthenticated,studentavatar);
 
 // -  - -   -   -   -   -   -   - APPLY INTERNSHIP    -    -   -   -   -   -   -
 
-// POST /student/apply/:jobid
-router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinternship);
-
+// POST /student/read/:jobid
+router.post("/student/read/internship/:internshipid",isAuthenticated,readinternship);
 
 // POST /allinternship
 router.post("/allinternship/",allinternship);
 
-//POST  /alljobs
-router.post("/alljobs/",alljobs);
+// POST /student/apply/:jobid
+router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinternship);
+
+
 
 
 // -  - -   -   -   -   -   -   - APPLY JOB    -    -   -   -   -   -   -
 
+// POST /student/read/:jobid
+router.post("/student/apply/job/:jobid",isAuthenticated,applyjob);
+
+//POST  /alljobs
+router.post("/alljobs/",alljobs);
 // POST /student/apply/:jobid
 router.post("/student/apply/job/:jobid",isAuthenticated,applyjob);
 

@@ -4,18 +4,17 @@ const internshipSchema = mongoose.Schema(
     {
         students : [{type : mongoose.Schema.ObjectId, ref : "Student"}],
         employe : {type : mongoose.Schema.ObjectId, ref : "Employe"},
-        profile : String,
+        organizationname : String,
+        title : String,
         skill : String,
-        internshiptype : {type : String, enum : ["In office","Remote"]},
+        internshiptype : {type : String, enum : ["In office","Remote","Hibrid"]},
         openings : Number,
         from : String,
         to : String,
         duration : String,
+        location : String,
         responsibility : String,
-        stipend : {
-            status : {type : String, enum : ["Fixed","Negotiable","Performance based","Unpaid"]},
-            amount : Number,
-        },
+        stipend : String,
         perks : String,
         assesments : String,
     },{timestamps : true}

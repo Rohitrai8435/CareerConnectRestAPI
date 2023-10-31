@@ -50,7 +50,7 @@ const employeSchema = mongoose.Schema(
             required : [true,"Organization Name is required"],
             minLength : [4,"Organization Name should be atleast 4 character long"]
         },
-        organizationlogo : {
+        avatar : {
             type : Object,
             default : {
                 fileId : "",

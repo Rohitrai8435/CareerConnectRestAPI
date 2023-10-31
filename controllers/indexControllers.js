@@ -151,6 +151,14 @@ exports.allinternship = catchAsyncErrors(async (req,res,next)=>{
     res.json({internships})
 })
 
+exports.readinternship = catchAsyncErrors(async (req,res,next)=>{
+    const internship = await internshipModel.findById(req.params.internshipid).exec();
+
+    if(!internship) return next(new ErrorHandler("Internship not found",404));
+
+    res.json({internship})
+})
+
 
 //  -   -   -   -   - APPLY JOBS     -   -   -   -       --  -   -
 exports.applyjob = catchAsyncErrors(async (req,res,next)=>{

@@ -38,7 +38,7 @@ router.get("/signout",isAuthenticated,employesignout)
 router.post("/send-mail",employesendmail)
 
 //GET /forget-link/:id"
-router.get("/forget-link/:id",employeforgetlink);
+router.post("/forget-link/",employeforgetlink);
 
 //POST /reset-password/:id"
 router.post("/reset-password/:id",isAuthenticated,employeresetpassword);
@@ -47,7 +47,7 @@ router.post("/reset-password/:id",isAuthenticated,employeresetpassword);
 router.post("/update/:id",isAuthenticated,employeupdate);
 
 // //POST /orgnigationlogo/:id"
-router.post("/organizationlogo/:id",isAuthenticated,employeavatar);
+router.post("/avatar/:id",isAuthenticated,employeavatar);
 
 // POST /employe/internship/create 
 router.post("/internship/create",isAuthenticated,createinternship);

@@ -11,15 +11,15 @@ const path = require('path');
 
 
 exports.currentemploye = catchAsyncErrors(async (req,res,next)=>{
-    const employe = await employeModel.findById(req.id).exec();
+    const employe = await employeModel.findById(req.id).populate('jobs').populate('internships').exec();
 
     res.json({employe})
 })
 
 exports.employesignup = catchAsyncErrors(async (req,res,next)=>{
-    const student = await new employeModel(req.body).save();
-    sendtoken(student,201,res);
-    // res.status(201).json(student);
+    const employe = await new employeModel(req.body).save();
+    sendtoken(employe,201,res);
+    res.status(201).json(employe);
 });
 
 exports.employesignin = catchAsyncErrors(async (req,res,next)=>{
@@ -45,19 +45,21 @@ exports.employesendmail = catchAsyncErrors(async (req,res,next)=>{
         return next(new ErrorHandler("User not found with this email address",404))
     }
 
-    const url = `${req.protocol}://${req.get("host")}/employe/forget-link/${employe._id}`;
+    // const url = `${req.protocol}://${req.get("host")}/employe/forget-link/${employe._id}`;
+    const url = Math.floor(Math.random()* 9000+ 10000);
     
     sendmail(req,res,next,url);
-    employe.resetPasswordToken = "1";
+    employe.resetPasswordToken = `${url}`;
     await employe.save();
+    res.status(200).json({employe});
 });
 
 exports.employeforgetlink = catchAsyncErrors(async (req,res,next)=>{
-    const employe = await employeModel.findById(req.params.id).exec();
+    const employe = await employeModel.findOne({email : req.body.email}).exec();
 
     if(!employe) return next(new ErrorHandler("User not found with this email",404));
 
-    if(employe.resetPasswordToken === "1"){
+    if(employe.resetPasswordToken === req.body.otp){
         employe.resetPasswordToken = "0";
         employe.password = req.body.password;
         await employe.save();
@@ -66,7 +68,8 @@ exports.employeforgetlink = catchAsyncErrors(async (req,res,next)=>{
     }
 
     res.status(200).json({
-        message : "Password has been Successfully changed"
+        message : "Password has been Successfully changed",
+        employe
     })
 });
 
@@ -99,23 +102,24 @@ exports.employeupdate = catchAsyncErrors(async (req,res,next)=>{
 exports.employeavatar = catchAsyncErrors(async (req,res,next)=>{
 
     const employe = await employeModel.findById(req.params.id).exec();
-    const file = req.files.logo;
+    const file = req.files.avatar;
 
     const momdifiedName = `imagekit-${Date.now()}${path.extname(file.name)}`
 
-    if(employe.organizationlogo.fileId!=="")
+    if(employe.avatar.fileId!=="")
     {
-        await imagekit.deleteFile(employe.organizationlogo.fileId);
+        await imagekit.deleteFile(employe.avatar.fileId);
     }
     const {fileId,url} = await imagekit.upload({
         file : file.data,
         fileName : momdifiedName
     })
-    employe.organizationlogo = {fileId,url};
+    employe.avatar = {fileId,url};
     await employe.save();
     res.status(200).json({
         success : true,
         message : "File uploaded Successfull",
+        employe
     })
 });
 
@@ -126,10 +130,10 @@ exports.createinternship = catchAsyncErrors(async (req,res,next)=>{
     internship.employe = employe._id;
     await internship.save();
     if(!employe) return next(new ErrorHandler("Employe not found",404));
+    
     employe.internships.push(internship._id);
-
     await employe.save();
-    res.status(201).json({success : true, internship});
+    res.status(201).json({success : true, internship,employe});
 });
 
 exports.readinternship = catchAsyncErrors(async (req,res,next)=>{
@@ -151,9 +155,11 @@ exports.createjob = catchAsyncErrors(async (req,res,next)=>{
     const job = await new jobModel(req.body);
     job.employe = employe._id;
     await job.save();
+    if(!employe) return next(new ErrorHandler("Employe not found",404));
     
+    employe.jobs.push(job._id);
     await employe.save();
-    res.status(201).json({success : true, job});
+    res.status(201).json({success : true, job,employe});
 });
 
 exports.readjob = catchAsyncErrors(async (req,res,next)=>{

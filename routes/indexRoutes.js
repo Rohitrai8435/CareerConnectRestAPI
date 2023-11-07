@@ -16,6 +16,7 @@ const {
     allinternship,
     alljobs,
     readinternship,
+    readjob,
  } = require('../controllers/indexControllers.js');
 
  const { isAuthenticated } = require("../middlewares/auth.js");
@@ -57,11 +58,12 @@ router.post("/student/avatar/:id",isAuthenticated,studentavatar);
 // POST /student/read/:internshipid
 router.post("/student/read/internship/:internshipid",readinternship);
 
+// POST /student/apply/:internshipid
+router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinternship);
+
 // POST /allinternship
 router.post("/allinternship/",allinternship);
 
-// POST /student/apply/:jobid
-router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinternship);
 
 
 
@@ -69,11 +71,12 @@ router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinter
 // -  - -   -   -   -   -   -   - APPLY JOB    -    -   -   -   -   -   -
 
 // POST /student/read/:jobid
-router.post("/student/apply/job/:jobid",applyjob);
+router.post("/student/read/job/:jobid",readjob);
+
+// POST /student/apply/:jobid
+router.post("/student/apply/job/:jobid",isAuthenticated,applyjob);
 
 //POST  /alljobs
 router.post("/alljobs/",alljobs);
-// POST /student/apply/:jobid
-router.post("/student/apply/job/:jobid",isAuthenticated,applyjob);
 
 module.exports = router;

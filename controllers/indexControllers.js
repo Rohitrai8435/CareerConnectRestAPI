@@ -151,6 +151,7 @@ exports.allinternship = catchAsyncErrors(async (req,res,next)=>{
     res.json({internships})
 })
 
+//  -   -   -   -   -   -   -   -   -   - Read Internship   -   -   -   -   -   -   -
 exports.readinternship = catchAsyncErrors(async (req,res,next)=>{
     const internship = await internshipModel.findById(req.params.internshipid).exec();
 
@@ -183,4 +184,13 @@ exports.alljobs = catchAsyncErrors(async (req,res,next)=>{
     if(!jobs) return next(new ErrorHandler("Jobs not found",404));
 
     res.json({jobs})
+})
+
+//  -   -   -   -   -   -   -   -   - Read Job  -   -   -   -   -   -
+exports.readjob = catchAsyncErrors(async (req,res,next)=>{
+    const job = await jobModel.findById(req.params.jobid).exec();
+
+    if(!job) return next(new ErrorHandler("job not found",404));
+
+    res.json({job})
 })

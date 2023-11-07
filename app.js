@@ -45,7 +45,6 @@ app.use('/resume',require('./routes/resumeRoutes.js'))
 // /employe
 app.use('/employe',require('./routes/employeRoutes.js'))
 
-
 // error handling
 const ErorrHandler = require('./utils/ErrorHandler.js');
 const { generatedErrors } = require('./middlewares/errors.js');

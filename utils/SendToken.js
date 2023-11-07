@@ -10,6 +10,6 @@ exports.sendtoken = (student,statusCode,res)=>{
     }
 
     res.status(statusCode)
-    .cookie("token",token,options)
-    .json({sucess : true,id : student._id,token});
+    .cookie("token",token,options);
+    // .json({sucess : true,id : student._id,token});
 };

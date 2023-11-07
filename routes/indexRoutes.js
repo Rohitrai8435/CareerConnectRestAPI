@@ -54,8 +54,8 @@ router.post("/student/avatar/:id",isAuthenticated,studentavatar);
 
 // -  - -   -   -   -   -   -   - APPLY INTERNSHIP    -    -   -   -   -   -   -
 
-// POST /student/read/:jobid
-router.post("/student/read/internship/:internshipid",isAuthenticated,readinternship);
+// POST /student/read/:internshipid
+router.post("/student/read/internship/:internshipid",readinternship);
 
 // POST /allinternship
 router.post("/allinternship/",allinternship);
@@ -69,7 +69,7 @@ router.post("/student/apply/internship/:internshipid",isAuthenticated,applyinter
 // -  - -   -   -   -   -   -   - APPLY JOB    -    -   -   -   -   -   -
 
 // POST /student/read/:jobid
-router.post("/student/apply/job/:jobid",isAuthenticated,applyjob);
+router.post("/student/apply/job/:jobid",applyjob);
 
 //POST  /alljobs
 router.post("/alljobs/",alljobs);

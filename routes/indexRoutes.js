@@ -49,8 +49,8 @@ router.post("/student/reset-password/:id",isAuthenticated,studentresetpassword);
 //POST /student/reset-password/:id"
 router.post("/student/update/:id",isAuthenticated,studentupdate);
 
-//POST /student/reset-password/:id"
-router.post("/student/avatar/:id",isAuthenticated,studentavatar);
+//POST /student/avater"
+router.post("/student/avatar",isAuthenticated,studentavatar);
 
 
 // -  - -   -   -   -   -   -   - APPLY INTERNSHIP    -    -   -   -   -   -   -

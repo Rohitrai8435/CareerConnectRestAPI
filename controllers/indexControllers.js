@@ -101,7 +101,7 @@ exports.studentupdate = catchAsyncErrors(async (req,res,next)=>{
 
 exports.studentavatar = catchAsyncErrors(async (req,res,next)=>{
 
-    const student = await studentModel.findById(req.params.id).exec();
+    const student = await studentModel.findById(req.id).exec();
     const file = req.files.avatar;
 
     const momdifiedName = `imagekit-${Date.now()}${path.extname(file.name)}`

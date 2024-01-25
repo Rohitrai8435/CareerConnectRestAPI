@@ -7,12 +7,12 @@ const studentSchema = mongoose.Schema(
         firstname : {
             type : String,
             required : [true,"First Name is required"],
-            minLength : [4,"First Name should be atleast 4 character long"]
+            minLength : [3,"First Name should be atleast 3 character long"]
         },
         lastname : {
             type : String,
             required : [true,"First Name is required"],
-            minLength : [4,"First Name should be atleast 4 character long"]
+            minLength : [3,"First Name should be atleast 3 character long"]
         },
         contact : {
             type : String,
@@ -37,6 +37,7 @@ const studentSchema = mongoose.Schema(
         password : {
             type : String,
             select : false,
+            required : [true,"Password is required"],
             maxLength : [15,"Password should not exceed more than 15 characters"],
             minLength : [6,"Password should have atleast 6 characters"],
             // match : [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/,"Please fill a valid Password"]

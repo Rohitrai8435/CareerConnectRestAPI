@@ -30,7 +30,7 @@ exports.employesignin = catchAsyncErrors(async (req,res,next)=>{
     const isMatch = employe.comparePassword(req.body.password);
     if(!isMatch) return next(new ErrorHandler("Wron Credientials",500));
     sendtoken(employe,200,res);
-    // res.json(employe);
+     res.json(employe);
 });
 
 exports.employesignout = catchAsyncErrors(async (req,res,next)=>{
